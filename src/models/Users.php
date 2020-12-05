@@ -6,7 +6,7 @@ namespace App\Models;
 use Firebase\JWT\JWT;
 use Phalcon\Mvc\Model;
 
-class User extends Model
+class Users extends Model
 {
     private string $username;
     private string $password;
@@ -15,7 +15,7 @@ class User extends Model
     /**
      * @return string
      */
-    public function getPassword() : string
+    public function getPasswordHash() : string
     {
         return $this->password;
     }
@@ -26,6 +26,14 @@ class User extends Model
     public function isAdmin() : bool
     {
         return $this->admin;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername() : string
+    {
+        return $this->username;
     }
 
     /**

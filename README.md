@@ -1,29 +1,21 @@
-# README #
+# house-manager
+house manager REST api based on Phalcon 4.0.0
 
-This README would normally document whatever steps are necessary to get your application up and running.
+### Features
+##### JWT Tokens
+Jwt are used for the authentication process. 
+Every request (except for login) requires a bearer token to be set, obtained during the login process 
 
-### What is this repository for? ###
+### Usage
+#### Requests
+Available roots
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+| Method    | Route                   | Parameters                                      | Action                                               | 
+|-----------|-------------------------|-------------------------------------------------|------------------------------------------------------|
+| `POST`    | `login`                 | `username`, `password`                          | Login - get Token. 401 if credentials are wrong      |
+| `POST`    | `houses`                | `name`, `description`, `services`, `type`, rooms| Add a house record in the database                   |
+| `GET`     | `houses`                |                                                 | Get houses. Empty resultset if no data present       |
+| `GET`     | `houses/{id}`           |                                                 | Get house by Id.404 if record does not exist         |
+| `PUT`     | `houses/{id}`           | `name`, `description`, `services`, `type`       | Update company by id. 404 if record does not exist   |
+| `DELETE`  | `houses/{id}`           |                                                 | Delete by id. 404 if record does not exist           |
 
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
