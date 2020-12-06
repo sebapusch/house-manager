@@ -44,7 +44,10 @@ $houses
     ->setHandler(HousesController::class)
     ->setLazy(true)
     ->setPrefix('/houses')
+    ->get('/', 'view')
     ->post('/', 'insert')
+    ->get('/{id:[0-9]+}', 'viewById')
+    ->put('/{id:[0-9]+}', 'updateById')
     ->delete('/{id:[0-9]+}', 'deleteById');
 
 $api->mount($login);

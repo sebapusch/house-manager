@@ -45,11 +45,11 @@ class Request extends PhRequest
     {
         $values = [];
 
-        foreach ($filters as  $filter) {
-            $value = $this->getQuery($filter['name'], $filter['type']);
+        foreach ($filters as $key => $type) {
+            $value = $this->getQuery($key, $type);
 
             if(false === empty($value)) {
-                $values[$filter['name']] = $value;
+                $values[$key] = $value;
             }
         }
 
