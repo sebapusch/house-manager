@@ -11,6 +11,9 @@ use Phalcon\Mvc\Controller;
 
 class HousesController extends Controller
 {
+    /**
+     * @return Response
+     */
     public function view()
     {
         $filerValues = $this->request->getFilterValues(
@@ -55,6 +58,10 @@ class HousesController extends Controller
             ->ok(['houses' => $houses]);
     }
 
+    /**
+     * @param int $id
+     * @return Response
+     */
     public function viewById(int $id)
     {
         $house = Houses::findFirstById($id);
@@ -73,12 +80,12 @@ class HousesController extends Controller
             ->ok(['house' => $house, 'rooms' => $rooms]);
     }
 
+    /**
+     * @return Response
+     */
     public function insert()
     {
         $rawData = $this->request->getJsonRawBody(true);
-        if(false === isset($rawData)) {
-            $rawData = [];
-        }
 
         try {
             $data = $this->sanitize->getSanitized(
@@ -97,7 +104,7 @@ class HousesController extends Controller
             $data['addition'] = $this->filter->sanitize($rawData['addition'], 'string');
         }
 
-        $house = Houses::fillHouse($data);
+        $house = Houses::fill($data);
 
         $rooms = [];
         if(isset($rawData['rooms'])) {
@@ -111,7 +118,7 @@ class HousesController extends Controller
                     continue;
                 }
 
-                $rooms[] = Rooms::fillRoom($roomData);
+                $rooms[] = Rooms::fill($roomData);
             }
             $house->rooms = $rooms;
         }
@@ -126,12 +133,11 @@ class HousesController extends Controller
         }
 
         return $this->response
-            ->ok([$house, 'rooms' => $house->rooms]);
+            ->ok(['house' => $house, 'rooms' => $house->rooms]);
     }
 
     /**
      * Update house and rooms corresponding to given house id
-     * @todo sometimes doesn't respond as expected
      * @param int $id
      * @return Response
      */
@@ -144,18 +150,15 @@ class HousesController extends Controller
                 ->notFound();
         }
 
-        if(false === $this->loggedUser->isAdmin() && $house->user !== $this->loggedUser->getUsername()) {
+        if(false === $this->loggedUser->isAdmin() && $this->loggedUser->getUsername() !== $house->user) {
             return $this->response
                 ->unauthorized('You are not authorized to update this house');
         }
 
         $rawData = $this->request->getJsonRawBody(true);
-        if(false === isset($rawData)) {
-            $rawData = [];
-        }
 
         try {
-            $data = $this->sanitize->getSanitized(
+            $houseData = $this->sanitize->getSanitized(
                 $rawData,
                 ['street' => 'string', 'number' => 'int', 'zipcode' => 'string', 'city' => 'string']
             );
@@ -164,31 +167,30 @@ class HousesController extends Controller
                 ->badRequest($e->getMessage());
         }
 
-        if(isset($rawData['addition']))
-        {
-            $data['addition'] = $this->filter->sanitize($rawData['addition'], 'string');
+        $house = Houses::fill($houseData, $house);
+
+        foreach ($house->rooms as $room) {
+            $room->delete();
         }
 
-        $house = Houses::fillHouse($data, $house);
-
-        $rooms = [];
         if(isset($rawData['rooms'])) {
+            $rooms = [];
             foreach ($rawData['rooms'] as $rawRoomData) {
                 try {
                     $roomData = $this->sanitize->getSanitized(
                         $rawRoomData,
-                        ['type' => 'string', 'width' => 'int', 'length' => 'int', 'height' => 'length']
+                        ['type' => 'string', 'width' => 'int', 'height' => 'int', 'length' => 'int']
                     );
                 } catch (KeyNotFoundException $e) {
                     continue;
                 }
 
-                $rooms[] = Rooms::fillRoom($roomData);
+                $rooms[] = Rooms::fill($roomData);
             }
             $house->rooms = $rooms;
         }
 
-        if(false === $house->save()) {
+        if(false === $house->update()) {
             $messages = '';
             foreach ($house->getMessages() as $message) {
                 $messages .= ($messages===''?'':', ') . $message->getMessage();
@@ -198,7 +200,7 @@ class HousesController extends Controller
         }
 
         return $this->response
-            ->ok([$house, 'rooms' => $house->rooms]);
+            ->ok(['house' => $house, 'rooms' => $house->rooms]);
     }
 
     public function deleteById(int $id)
