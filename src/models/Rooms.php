@@ -47,7 +47,15 @@ class Rooms extends Model
         return $this->validate($validator);
     }
 
-    public static function fillRoom(array $data, array $room = null)
+    /**
+     * Fill the passed or a new Room with given data
+     *
+     * If no Room is passed a new Room will be instantiated and filled
+     * @param array $data
+     * @param array|null $room
+     * @return Rooms|array
+     */
+    public static function fill(array $data, array $room = null)
     {
         if($room === null) {
             $room = new self();

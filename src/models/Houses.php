@@ -18,6 +18,8 @@ class Houses extends Model
 
     public function initialize(): void
     {
+        $this->useDynamicUpdate(true);  //only values that changed will be updated
+
         $this->hasMany(
             'id',
             Rooms::class,
@@ -25,8 +27,15 @@ class Houses extends Model
             ['alias' => 'rooms']);
     }
 
-
-    public static function fillHouse(array $data, $house = null): Houses
+    /**
+     * Fill the passed or a new House with given data
+     *
+     * If no house is passed a new House will be instantiated and filled
+     * @param array $data
+     * @param Houses|null $house
+     * @return Houses
+     */
+    public static function fill(array $data, $house = null): Houses
     {
         if($house === null) {
             $house = new self();

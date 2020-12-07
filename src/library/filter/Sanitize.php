@@ -19,12 +19,16 @@ class Sanitize
      * @return array
      * @throws KeyNotFoundException
      */
-    public function getSanitized(array $data, array $fields) : array
+    public function getSanitized($data, array $fields) : array
     {
        $container = Di::getDefault();
        $errorMessage = '';
        $sanitizedData = [];
        $filter = $container->get('filter');
+
+       if($data === null) {
+           $data = [];
+       }
 
         foreach ($fields as $key => $type) {
             if(empty($data[$key])) {

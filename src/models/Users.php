@@ -5,6 +5,8 @@ namespace App\Models;
 
 use Firebase\JWT\JWT;
 use Phalcon\Mvc\Model;
+use Phalcon\Validation\Validator\Uniqueness;
+use Phalcon\Validation;
 
 class Users extends Model
 {
@@ -56,5 +58,20 @@ class Users extends Model
         ];
 
         return JWT::encode($payload, $key, $alg);
+    }
+
+    public function validation() : bool
+    {
+        $validator = new Validation();
+
+        $validator->add(
+            'username',
+            new Uniqueness([
+                'message' => 'The given username is not unique',
+                'allowEmpty' => false
+            ])
+        );
+
+        return $this->validate($validator);
     }
 }
