@@ -56,7 +56,7 @@ As an `admin` you can perform every available operation without restrictions.
 #### Requests
 **Login**
 - Request
-```json
+```
 POST /login HTTP/1.1
 Host: {hostname}
 Content-Type: application/json
@@ -68,7 +68,7 @@ Content-Length: 53
 }
 ```
 - Response
-```json
+```
 HTTP/1.1 200 OK
 connection: close
 content-type: application/json; charset=UTF-8
@@ -82,13 +82,13 @@ x-powered-by: PHP/7.X.X
 
 **Get list of houses**
 - Request
-```json
+```
  GET /houses HTTP/1.1
  Authorization: Bearer {jwt}
  Host: {hostname} 
 ```
 - Response
-```json
+```
 connection: close
 content-type: application/json; charset=UTF-8
 date: Sun, 06 Dec 2020 19:27:23 GMT
@@ -120,7 +120,7 @@ x-powered-by: PHP/7.X.X
 ```
 **Insert new house**
 - Request
-```json
+```
 POST /houses HTTP/1.1
 Authorization: Bearer {jwt}
 Host: {hostname}
@@ -141,7 +141,7 @@ Content-Length: 305
 }
 ```
 - Response
-```json
+```
 HTTP/1.1 200 OK
 connection: close
 content-type: application/json; charset=UTF-8
