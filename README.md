@@ -55,6 +55,7 @@ As an `admin` you can perform every available operation without restrictions.
 
 #### Requests
 **Login**
+
 - Request
 ```
 POST /login HTTP/1.1
@@ -81,6 +82,7 @@ x-powered-by: PHP/7.X.X
 ```
 
 **Get list of houses**
+
 - Request
 ```
  GET /houses HTTP/1.1
@@ -119,6 +121,7 @@ x-powered-by: PHP/7.X.X
 }
 ```
 **Insert new house**
+
 - Request
 ```
 POST /houses HTTP/1.1
@@ -175,11 +178,13 @@ x-powered-by: PHP/7.X.X
 ### Database
 #### Structure
 **Tables**: 
+
 - users 
 - houses
 - rooms 
 
 **Relationships:**
+
 - users:houses : 1:N
 - houses:rooms : 1:N
 
@@ -188,6 +193,7 @@ The database dump is filled with roughly 40 users, 150 houses and 1000 rooms.
 This means every user is the owner of ca. 3-4 houses.
 
 **User credentials**
+
 - admin
     - username: admin
     - password: password
