@@ -1,0 +1,8 @@
+{
+  "name": "sebastian/house-manager",
+  "version": "1.0.1",
+  "require": {
+    "firebase/php-jwt": "^5.2",
+    "vlucas/phpdotenv": "^4.0"
+  }
+}

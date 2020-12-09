@@ -1,6 +1,5 @@
 /chache/
 .env
-composer.json
 vendor
 .phalcon
 .idea
